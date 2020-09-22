@@ -1,0 +1,67 @@
+/* Copyright (C) 2020, HENSOLDT Cyber GmbH */
+
+/**
+ * @file
+ * @brief   Generic interface for accessing a LED entity.
+ */
+
+procedure if_DISPLAY {
+    include "OS_Error.h";
+    include "stdint.h";
+
+    /**
+    * @brief Scrolls text to the left.
+    * 
+    * @details CAmkES RPC interface handler. The main program (with the run function) can call
+    *          this function.
+    * 
+    * @param text      text that should be scrolled over the display
+    * 
+    * @return Implementation specific.
+    */ 
+    OS_Error_t scroll_text(
+        in string text
+    );
+
+
+    /**
+    * @brief Displays specific character on all devices.
+    * 
+    * @details CAmkES RPC interface handler. The main program (with the run function) can call
+    *          this function.
+    * 
+    * @param character     character that should be displayed
+    * 
+    * @return Implementation specific.
+    */ 
+    OS_Error_t display_char(
+        in unsigned char character
+    );
+
+    /**
+    * @brief Displays specific character on specific device.
+    * 
+    * @details CAmkES RPC interface handler. The main program (with the run function) can call
+    *          this function.
+    * 
+    * @param character     character that should be displayed
+    * @param device        device to write to
+    * 
+    * @return  Implementation specific.
+    */ 
+    OS_Error_t display_char_on_device(
+        in unsigned char character, 
+        in uint8_t device
+    );
+
+    /**
+    * @brief Clears entire display.
+    * 
+    * @details CAmkES RPC interface handler. The main program (with the run function) can call
+    *          this function.
+    * 
+    * @return Implementation specific.
+    */  
+    OS_Error_t clear_display();
+
+};
