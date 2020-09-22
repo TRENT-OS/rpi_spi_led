@@ -1,0 +1,88 @@
+/*
+ * RasPi3 (BCM2837) SPI LED driver
+ *
+ * Copyright (C) 2020, HENSOLDT Cyber GmbH
+ */
+
+#pragma once
+
+import <if_OS_Timer.camkes>;
+
+//------------------------------------------------------------------------------
+
+
+// NOTE: VideoCore has this at 0x7E200000
+#define RPi_SPI_LED_HW_BCM2837_DATAPORT_PADDR     0x3F200000
+#define RPi_SPI_LED_HW_BCM2837_DATAPORT_SIZE      0x8000
+
+
+//------------------------------------------------------------------------------
+
+/*
+ * Declare the RPi_SPI_LED HW component:
+ *
+ *      RPi_SPI_LED_HW_COMPONENT_DEFINE(
+ *          <name>
+ *      )
+ */
+#define RPi_SPI_LED_HW_COMPONENT_DEFINE( \
+    _type_) \
+    \
+    component _type_ { \
+        hardware; \
+        dataport  Buf(RPi_SPI_LED_HW_BCM2837_DATAPORT_SIZE)  regBase; \
+    }
+
+/*
+ * Declare the RPi_SPI_LED driver component:
+ *
+ *      RPi_SPI_LED_COMPONENT_DEFINE(
+ *          <name>
+ *      )
+ */
+#define RPi_SPI_LED_COMPONENT_DEFINE( \
+    _type_) \
+    \
+    component _type_ { \
+        dataport  Buf(RPi_SPI_LED_HW_BCM2837_DATAPORT_SIZE)  regBase; \
+        \
+        uses        if_OS_Timer                 timeServer_rpc; \
+        consumes    TimerReady                  timeServer_notify; \
+        \
+        provides    if_DISPLAY                  led_rpc; \
+    }
+
+
+//------------------------------------------------------------------------------
+
+/*
+ * Connect a RPi_SPI_LED driver instance to the HW instance.
+ *
+ *      RPi_SPI_LED_INSTANCE_CONNECT(
+ *          <type>,
+ *          <inst>,
+ *      )
+ */
+#define RPi_SPI_LED_INSTANCE_CONNECT( \
+    _inst_, \
+    _inst_hw_) \
+    \
+    connection  seL4HardwareMMIO  _inst_ ## _mmio( \
+                from _inst_.regBase, \
+                to   _inst_hw_.regBase);
+
+
+//------------------------------------------------------------------------------
+
+/*
+ * Let RPi_SPI_LED configure itself:
+ *
+ *      RPi_SPI_LED_HW_INSTANCE_CONFIGURE_SELF(
+ *          <instance>
+ *      )
+ */
+#define RPi_SPI_LED_HW_INSTANCE_CONFIGURE_SELF( \
+    _inst_) \
+    \
+    _inst_.regBase_paddr  = RPi_SPI_LED_HW_BCM2837_DATAPORT_PADDR; \
+    _inst_.regBase_size   = RPi_SPI_LED_HW_BCM2837_DATAPORT_SIZE;
