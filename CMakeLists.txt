@@ -17,12 +17,12 @@ cmake_minimum_required(VERSION 3.17)
 #   LIBS <lib_1> <lib_2> ...
 #     additional libraries. At least a TimeServer client library is required
 #
-function(DeclareCAmkESComponent_RPI_SPI_LED name)
+function(RPi_SPI_LED_DeclareCAmkESComponent name)
 
     cmake_parse_arguments(
         PARSE_ARGV
         1
-        RPI_SPI_LED
+        RPi_SPI_LED
         ""
         ""
         "LIBS"
@@ -31,7 +31,7 @@ function(DeclareCAmkESComponent_RPI_SPI_LED name)
     DeclareCAmkESComponent(
         ${name}
         SOURCES
-            ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/RPI_SPI_LED.c
+            ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/RPi_SPI_LED.c
             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/bcm2837_gpio.c
             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/bcm2837_spi.c
             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/max7219.c
@@ -41,7 +41,7 @@ function(DeclareCAmkESComponent_RPI_SPI_LED name)
         LIBS
             os_core_api
             os_libs
-            ${RPI_SPI_LED_LIBS}
+            ${RPi_SPI_LED_LIBS}
     )
 
 endfunction()
