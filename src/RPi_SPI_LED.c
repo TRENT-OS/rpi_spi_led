@@ -4,7 +4,7 @@
  * @brief   SPI LED driver.
  */
 #include "OS_Error.h"
-#include "LibDebug/Debug.h"
+#include "lib_debug/Debug.h"
 #include "TimeServer.h"
 #include "bcm2837_spi.h"
 #include "max7219.h"
